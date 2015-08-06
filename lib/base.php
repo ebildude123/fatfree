@@ -2156,8 +2156,9 @@ final class Base extends Prefab implements ArrayAccess {
 		}
 		if ($error=error_get_last())
 			// Error detected
-			$this->error(500,sprintf(self::E_Fatal,$error['message']),
-				array($error));
+			if (strpos($error["message"], "POST Content-Length of ") === false) {
+				$this->error(500,sprintf(self::E_Fatal,$error['message']),array($error));
+			}
 		date_default_timezone_set($this->hive['TZ']);
 		// Register framework autoloader
 		spl_autoload_register(array($this,'autoload'));
